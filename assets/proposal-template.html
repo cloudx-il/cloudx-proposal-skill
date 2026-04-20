@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הצעת מחיר — [CLIENT_NAME] — [SERVICE_SHORT]</title>
+<style>
+/* ================================================================
+   CLOUDX PROPOSAL — DESIGN SYSTEM CSS
+   Copy this entire <style> block VERBATIM into every generated proposal.
+   Do NOT modify colors, sizes, fonts, or spacing values.
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --blue-900: #0D47A1;
+  --blue-800: #1565C0;
+  --blue-700: #1976D2;
+  --blue-600: #1E88E5;
+  --blue-500: #2196F3;
+  --blue-400: #42A5F5;
+  --blue-200: #90CAF9;
+  --blue-100: #BBDEFB;
+  --blue-50: #E3F2FD;
+  --gold: #F9A825;
+  --gold-dark: #F57F17;
+  --white: #FFFFFF;
+  --gray-50: #FAFAFA;
+  --gray-100: #F5F5F5;
+  --gray-200: #EEEEEE;
+  --gray-300: #E0E0E0;
+  --gray-600: #757575;
+  --gray-800: #424242;
+  --gray-900: #212121;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+body {
+  font-family: 'Heebo', sans-serif;
+  color: var(--gray-900);
+  direction: rtl;
+  background: white;
+  line-height: 1.7;
+}
+
+/* --- Page Container --- */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  background: white;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+}
+
+.page:last-child {
+  page-break-after: avoid;
+}
+
+/* === COVER PAGE === */
+.cover {
+  background: linear-gradient(160deg, var(--blue-900) 0%, var(--blue-800) 60%, var(--blue-700) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 50px;
+}
+
+/* Decorative rings on cover */
+.cover .deco-ring {
+  position: absolute;
+  border: 8px solid rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+.cover .r1 { width: 500px; height: 500px; top: -180px; left: -120px; }
+.cover .r2 { width: 350px; height: 350px; bottom: -80px; right: -80px; border-color: rgba(249,168,37,0.12); }
+
+/* White logo bar at top of cover */
+.cover-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background: rgba(255,255,255,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  z-index: 10;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.cover-top-bar img { height: 52px; }
+.cover-top-bar .divider { width: 2px; height: 36px; background: var(--gold); opacity: 0.5; }
+
+.cover h1 {
+  font-weight: 900;
+  font-size: 44px;
+  color: var(--gold);
+  margin-bottom: 16px;
+  z-index: 1;
+}
+
+.cover .subtitle {
+  font-weight: 300;
+  font-size: 24px;
+  color: var(--blue-200);
+  margin-bottom: 12px;
+  z-index: 1;
+}
+
+.cover .sub2 {
+  font-weight: 400;
+  font-size: 18px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 50px;
+  z-index: 1;
+}
+
+.cover .date-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 12px 36px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  z-index: 1;
+}
+
+.cover .to-line {
+  color: var(--blue-200);
+  font-size: 16px;
+  margin-top: 40px;
+  z-index: 1;
+}
+
+.cover .to-name {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  z-index: 1;
+}
+
+/* === CONTENT PAGES === */
+.content-page {
+  padding: 50px 55px 60px;
+}
+
+/* Blue gradient strip on right edge */
+.content-page .side-bar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 10px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--blue-800), var(--blue-400));
+}
+
+/* Page number (bottom left) */
+.content-page .page-num {
+  position: absolute;
+  bottom: 25px;
+  left: 35px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 13px;
+  color: var(--gray-600);
+}
+
+/* Footer logos (bottom center of every content page) */
+.page-logos {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.page-logos .logos-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-logos img { height: 24px; opacity: 0.5; }
+.page-logos .divider { width: 1.5px; height: 20px; background: var(--gray-300); flex-shrink: 0; }
+
+/* === TYPOGRAPHY === */
+.section-title {
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--blue-800);
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--blue-800);
+}
+
+.section-subtitle {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--blue-800);
+  margin-top: 28px;
+  margin-bottom: 12px;
+}
+
+.section-subtitle-sm {
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--blue-700);
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+p, li {
+  font-size: 14.5px;
+  color: var(--gray-800);
+  line-height: 1.8;
+}
+
+ul {
+  padding-right: 20px;
+  margin-bottom: 12px;
+}
+
+li {
+  margin-bottom: 6px;
+}
+
+/* === HIGHLIGHT BOXES === */
+
+/* Blue info box — for decisions, key information */
+.highlight-box {
+  background: var(--blue-50);
+  border-right: 4px solid var(--blue-800);
+  padding: 16px 20px;
+  border-radius: 0 12px 12px 0;
+  margin: 16px 0;
+}
+
+.highlight-box p {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--blue-900);
+}
+
+/* Gold box — for quotes, mottos, disclaimers */
+.gold-box {
+  background: #FFF8E1;
+  border-right: 4px solid var(--gold);
+  padding: 16px 20px;
+  border-radius: 0 12px 12px 0;
+  margin: 16px 0;
+}
+
+/* === NUMBERED LIST (blue circle counters) === */
+.numbered-list {
+  counter-reset: item;
+  list-style: none;
+  padding-right: 0;
+}
+
+.numbered-list li {
+  counter-increment: item;
+  padding-right: 36px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.numbered-list li::before {
+  content: counter(item);
+  position: absolute;
+  right: 0;
+  top: 2px;
+  width: 26px;
+  height: 26px;
+  background: var(--blue-800);
+  color: white;
+  border-radius: 50%;
+  font-family: 'Rubik', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === MEETING TABLE === */
+.meeting-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.meeting-table th {
+  background: var(--blue-800);
+  color: white;
+  padding: 10px 14px;
+  text-align: right;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.meeting-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 13.5px;
+  color: var(--gray-800);
+}
+
+.meeting-table tr:nth-child(even) {
+  background: var(--gray-50);
+}
+
+.meeting-table tr:last-child td {
+  border-bottom: 2px solid var(--blue-800);
+}
+
+/* === PRICING === */
+
+/* Data stat cards (used in pricing and about sections) */
+.price-details {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.price-detail-card {
+  flex: 1;
+  background: var(--gray-50);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  border-top: 3px solid var(--blue-400);
+}
+
+.price-detail-card .num {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--blue-800);
+}
+
+.price-detail-card .label {
+  font-size: 13px;
+  color: var(--gray-600);
+  margin-top: 4px;
+}
+
+/* Big price display box */
+.price-box {
+  background: linear-gradient(135deg, var(--blue-900), var(--blue-800));
+  color: white;
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.price-box .price-label {
+  font-size: 16px;
+  color: var(--blue-200);
+  margin-bottom: 8px;
+}
+
+.price-box .price-amount {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 800;
+  font-size: 42px;
+  color: var(--gold);
+}
+
+.price-box .price-note {
+  font-size: 14px;
+  color: var(--blue-200);
+  margin-top: 4px;
+}
+
+/* === DELIVERABLE CARDS === */
+.deliverable-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 16px;
+  background: var(--gray-50);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border-right: 3px solid var(--blue-400);
+}
+
+.deliverable-item .del-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--blue-800);
+  color: white;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.deliverable-item h4 {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--gray-900);
+  margin-bottom: 2px;
+}
+
+.deliverable-item p {
+  font-size: 13px;
+  color: var(--gray-600);
+}
+
+/* === TEAM CARDS === */
+.team-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  background: var(--gray-50);
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.team-card .avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--blue-800);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.team-card h4 {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--blue-800);
+  margin-bottom: 2px;
+}
+
+.team-card .role {
+  font-size: 13px;
+  color: var(--gold-dark);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.team-card p {
+  font-size: 13px;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+/* === TERMS & SIGNATURES === */
+.terms {
+  font-size: 12.5px;
+  color: var(--gray-600);
+  line-height: 1.9;
+}
+
+.terms li {
+  font-size: 12.5px;
+  color: var(--gray-600);
+  margin-bottom: 4px;
+}
+
+.signature-section {
+  margin-top: 40px;
+  border-top: 2px solid var(--gray-300);
+  padding-top: 24px;
+}
+
+.sig-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.sig-box {
+  border: 1px solid var(--gray-300);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.sig-box h4 {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--blue-800);
+  margin-bottom: 16px;
+}
+
+.sig-line {
+  border-bottom: 1px solid var(--gray-300);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--gray-600);
+}
+
+/* === PRINT & SCREEN === */
+@media print {
+  body { margin: 0; }
+  .page { margin: 0; box-shadow: none; }
+}
+
+@media screen {
+  .page {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    margin: 20px auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     PAGE 1: COVER
+     - Blue gradient background with decorative rings
+     - White top bar with BOTH logos (CLOUDX + client) and gold divider
+     - Gold title "הצעת מחיר"
+     - Service subtitle and description
+     - Date badge
+     - "לכבוד" recipient section
+     ================================================================ -->
+<div class="page cover">
+  <div class="deco-ring r1"></div>
+  <div class="deco-ring r2"></div>
+
+  <div class="cover-top-bar">
+    <img src="[CLOUDX_LOGO_PATH]" alt="CLOUDX">
+    <div class="divider"></div>
+    <img src="[CLIENT_LOGO_PATH]" alt="[CLIENT_NAME]">
+  </div>
+
+  <h1>הצעת מחיר</h1>
+  <div class="subtitle">[SERVICE_SUBTITLE — e.g., מיפוי ואפיון צרכים — מערכת Salesforce]</div>
+  <div class="sub2">[SERVICE_DESCRIPTION — e.g., שיפור תהליכים, חוויית משתמש ויכולות המערכת]</div>
+
+  <div class="date-badge">[MONTH YEAR — e.g., אפריל 2026]</div>
+
+  <div class="to-line" style="margin-top: 50px;">לכבוד:</div>
+  <div class="to-name">[CLIENT_ORG_FULL_NAME — e.g., עמותת עולים ביחד]</div>
+  <div class="to-line">עבור [CONTACT_NAME] — [CONTACT_ROLE]</div>
+</div>
+
+<!-- ================================================================
+     PAGE 2: COVER LETTER (מכתב מלווה)
+     - Personal, professional letter
+     - References the meeting date
+     - Tone differs for new vs existing client (see content-guide.md)
+     ================================================================ -->
+<div class="page content-page">
+  <div class="side-bar"></div>
+  <h2 class="section-title">מכתב מלווה</h2>
+
+  <p style="margin-top: 24px;">שלום רב,</p>
+
+  <!-- EXISTING CLIENT tone: partnership, efficiency, leveraging familiarity -->
+  <!-- NEW CLIENT tone: introduction, selling CLOUDX, building trust -->
+  <p style="margin-top: 14px;">
+    [LETTER_PARAGRAPH_1 — Reference the meeting, introduce the proposal purpose]
+  </p>
+
+  <p style="margin-top: 14px;">
+    [LETTER_PARAGRAPH_2 — For existing: highlight years of partnership and deep knowledge.
+     For new: introduce CLOUDX expertise and why we're the right fit]
+  </p>
+
+  <p style="margin-top: 14px;">
+    [LETTER_PARAGRAPH_3 — Summarize what the proposal addresses]
+  </p>
+
+  <p style="margin-top: 14px;">
+    [CLOSING — hope they find it suitable, offer to discuss]
+  </p>
+
+  <p style="margin-top: 20px;">
+    <strong>בברכה,</strong><br>
+    [SIGNER_NAME] — [SIGNER_ROLE], CLOUDX
+  </p>
+
+  <div class="page-logos">
+    <div class="logos-group">
+      <img src="[CLOUDX_LOGO_PATH]" alt="CLOUDX">
+      <div class="divider"></div>
+      <img src="[CLIENT_LOGO_PATH]" alt="[CLIENT_NAME]">
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE 3: ABOUT CLOUDX + TEAM
+     - EXISTING CLIENT: Short about paragraph + 3 stat cards + team paragraph + team cards
+     - NEW CLIENT: Much longer — see content-guide.md for expanded structure
+       May span 2 pages for new clients (add extra .page div)
+     ================================================================ -->
+<div class="page content-page">
+  <div class="side-bar"></div>
+  <h2 class="section-title">אודות CLOUDX</h2>
+
+  <p style="margin-top: 16px;">
+    [ABOUT_PARAGRAPH — Company description. Short for existing, expanded for new]
+  </p>
+
+  <!-- 3 stat cards in a flex row -->
+  <div style="display: flex; gap: 16px; margin: 24px 0;">
+    <div class="price-detail-card">
+      <div class="num">[STAT_1_NUMBER]</div>
+      <div class="label">[STAT_1_LABEL]</div>
+    </div>
+    <div class="price-detail-card">
+      <div class="num">[STAT_2_NUMBER]</div>
+      <div class="label">[STAT_2_LABEL]</div>
+    </div>
+    <div class="price-detail-card">
+      <div class="num">[STAT_3_NUMBER]</div>
+      <div class="label">[STAT_3_LABEL]</div>
+    </div>
+  </div>
+
+  <p style="margin-top: 8px;">
+    [TEAM_INTRO_PARAGRAPH — About the team that will work on this project]
+  </p>
+
+  <h3 class="section-subtitle">הצוות המוביל</h3>
+
+  <!-- Repeat for each team member (1-3) -->
+  <div class="team-card">
+    <div class="avatar">[FIRST_LETTER]</div>
+    <div>
+      <h4>[TEAM_MEMBER_NAME]</h4>
+      <div class="role">[TEAM_MEMBER_ROLE] — CLOUDX</div>
+      <p>[TEAM_MEMBER_BIO]</p>
+    </div>
+  </div>
+
+  <div class="page-logos">
+    <div class="logos-group">
+      <img src="[CLOUDX_LOGO_PATH]" alt="CLOUDX">
+      <div class="divider"></div>
+      <img src="[CLIENT_LOGO_PATH]" alt="[CLIENT_NAME]">
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE 4: BACKGROUND & GOALS (רקע ומטרות)
+     - Meeting reference and challenges list
+     - Decision highlight-box
+     - Improvement topics (numbered list with blue circles)
+     - Guiding quote in gold-box
+     - Additional topics
+     ================================================================ -->
+<div class="page content-page">
+  <div class="side-bar"></div>
+  <h2 class="section-title">רקע ומטרות</h2>
+
+  <p style="margin-top: 16px;">
+    [BACKGROUND_INTRO — Reference the meeting date and context.
+     Existing: direct. New: includes needs assessment framing]
+  </p>
+
+  <ul style="margin-top: 12px;">
+    <!-- List of challenges that came up in the meeting -->
+    <li>[CHALLENGE_1]</li>
+    <li>[CHALLENGE_2]</li>
+    <li>[CHALLENGE_N]</li>
+  </ul>
+
+  <!-- Optional: decision box -->
+  <div class="highlight-box">
+    <p><strong>החלטה:</strong> [DECISION_TEXT]</p>
+  </div>
+
+  <h3 class="section-subtitle">[IMPROVEMENT_SECTION_TITLE]</h3>
+
+  <!-- Optional: guiding quote -->
+  <div class="gold-box">
+    <p style="font-style: italic; color: var(--gold-dark);">[GUIDING_QUOTE]</p>
+  </div>
+
+  <ol class="numbered-list" style="margin-top: 16px;">
+    <li><strong>[TOPIC_1_TITLE]</strong> — [TOPIC_1_DESCRIPTION]</li>
+    <li><strong>[TOPIC_2_TITLE]</strong> — [TOPIC_2_DESCRIPTION]</li>
+    <li><strong>[TOPIC_N_TITLE]</strong> — [TOPIC_N_DESCRIPTION]</li>
+  </ol>
+
+  <!-- Optional: additional topics -->
+  <h3 class="section-subtitle">נושאים נוספים שזוהו</h3>
+  <ul>
+    <li>[ADDITIONAL_TOPIC_1]</li>
+    <li>[ADDITIONAL_TOPIC_N]</li>
+  </ul>
+
+  <div class="page-logos">
+    <div class="logos-group">
+      <img src="[CLOUDX_LOGO_PATH]" alt="CLOUDX">
+      <div class="divider"></div>
+      <img src="[CLIENT_LOGO_PATH]" alt="[CLIENT_NAME]">
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE 5: SCOPE OF WORK (היקף העבודה — שלב א')
+     - Work format description
+     - Phase A: meetings table (2 columns only: department + focus)
+     ================================================================ -->
+<div class="page content-page">
+  <div class="side-bar"></div>
+  <h2 class="section-title">היקף העבודה — שלב האפיון</h2>
+
+  <p style="margin-top: 16px;">
+    [SCOPE_INTRO — describe the work format and approach]
+  </p>
+
+  <h3 class="section-subtitle">שלב א' — [PHASE_A_TITLE]</h3>
+
+  <p>[PHASE_A_DESCRIPTION]</p>
+
+  <!-- TWO columns only: department + focus. NO duration column. -->
+  <table class="meeting-table">
+    <tr>
+      <th style="width: 35%;">מחלקה / יחידה</th>
+      <th style="width: 65%;">מוקד הפגישה</th>
+    </tr>
+    <tr>
+      <td><strong>[DEPT_1]</strong></td>
+      <td>[FOCUS_1]</td>
+    </tr>
+    <!-- Repeat for each department -->
+  </table>
+
+  <div class="page-logos">
+    <div class="logos-group">
+      <img src="[CLOUDX_LOGO_PATH]" alt="CLOUDX">
+      <div class="divider"></div>
+      <img src="[CLIENT_LOGO_PATH]" alt="[CLIENT_NAME]">
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE 6: PHASES B+C + DELIVERABLES
+     - Phase B: analysis and spec document
+     - Phase C: summary meeting
+     - Deliverables as cards with numbered blue circles
+     ================================================================ -->
+<div class="page content-page">
+  <div class="side-bar"></div>
+  <h3 class="section-subtitle" style="margin-top: 0;">[PHASE_B_TITLE]</h3>
+  <p>[PHASE_B_INTRO]</p>
+  <ul>
+    <li>[PHASE_B_ITEM_1]</li>
+    <li>[PHASE_B_ITEM_N]</li>
+  </ul>
+
+  <h3 class="section-subtitle">[PHASE_C_TITLE]</h3>
+  <p>[PHASE_C_DESCRIPTION]</p>
+
+  <h2 class="section-title" style="margin-top: 28px;">תוצרים</h2>
+
+  <div style="margin-top: 16px;">
+    <!-- Repeat for each deliverable -->
+    <div class="deliverable-item">
+      <div class="del-num">1</div>
+      <div>
+        <h4>[DELIVERABLE_1_TITLE]</h4>
+        <p>[DELIVERABLE_1_DESCRIPTION]</p>
+      </div>
+    </div>
+    <div class="deliverable-item">
+      <div class="del-num">2</div>
+      <div>
+        <h4>[DELIVERABLE_2_TITLE]</h4>
+        <p>[DELIVERABLE_2_DESCRIPTION]</p>
+      </div>
+    </div>
+    <!-- Add more as needed -->
+  </div>
+
+  <div class="page-logos">
+    <div class="logos-group">
+      <img src="[CLOUDX_LOGO_PATH]" alt="CLOUDX">
+      <div class="divider"></div>
+      <img src="[CLIENT_LOGO_PATH]" alt="[CLIENT_NAME]">
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE 7: PRICING (תמחור)
+     - 3 stat cards: hours, hourly rate, working days
+     - Big price box with gold amount
+     - Billing info in highlight-box
+     - Disclaimer in gold-box
+     ================================================================ -->
+<div class="page content-page">
+  <div class="side-bar"></div>
+  <h2 class="section-title">תמחור</h2>
+
+  <p style="margin-top: 16px;">[PRICING_INTRO — e.g., הערכת השעות עבור שלב האפיון:]</p>
+
+  <div class="price-details">
+    <div class="price-detail-card">
+      <div class="num">[TOTAL_HOURS]</div>
+      <div class="label">שעות עבודה</div>
+    </div>
+    <div class="price-detail-card">
+      <div class="num">[HOURLY_RATE]₪</div>
+      <div class="label">תעריף לשעה</div>
+    </div>
+    <div class="price-detail-card">
+      <div class="num">[WORKING_DAYS]</div>
+      <div class="label">ימי עבודה מרוכזים</div>
+    </div>
+  </div>
+
+  <div class="price-box">
+    <div class="price-label">[PRICE_LABEL — e.g., עלות כוללת לשלב האפיון]</div>
+    <div class="price-amount">[TOTAL_PRICE] ₪</div>
+    <div class="price-note">לא כולל מע"מ</div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 20px;">
+    <p style="font-size: 13.5px;">
+      <strong>אופן חיוב:</strong> [BILLING_DESCRIPTION]
+    </p>
+  </div>
+
+  <div class="gold-box" style="margin-top: 16px;">
+    <p style="font-size: 13px; color: var(--gray-800);">
+      <strong>הבהרה:</strong> [DISCLAIMER_TEXT]
+    </p>
+  </div>
+
+  <div class="page-logos">
+    <div class="logos-group">
+      <img src="[CLOUDX_LOGO_PATH]" alt="CLOUDX">
+      <div class="divider"></div>
+      <img src="[CLIENT_LOGO_PATH]" alt="[CLIENT_NAME]">
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE 8: TERMS + SIGNATURES (תנאים כלליים)
+     - Standard terms list
+     - Signature blocks — format differs for new vs existing client
+       See content-guide.md for signature structure per client type
+     ================================================================ -->
+<div class="page content-page">
+  <div class="side-bar"></div>
+  <h2 class="section-title">תנאים כלליים</h2>
+
+  <ul class="terms" style="margin-top: 16px;">
+    <li>תנאי תשלום: 15 ימים מיום הפקת דרישת התשלום ללקוח.</li>
+    <li>דרישת תשלום תופק בסוף כל חודש בגין השירותים שניתנו באותו חודש.</li>
+    <li>המחירים והעלויות בהסכם זה מצוינים ללא מע"מ אשר יתווסף לכל תשלום כחוק.</li>
+    <li>תוקף הצעה זו למשך 30 ימים מיום הגשתה.</li>
+    <li>השירותים יינתנו ע"י חברת קלאוד איקס בע"מ כקבלן עצמאי ולא ייווצרו יחסי עובד-מעביד בין הספק או עובדיו לבין הלקוח.</li>
+    <li>חברת קלאוד איקס בע"מ לא תישא באחריות לנזקים עקיפים או תוצאתיים, לרבות אובדן הכנסה או רווח שייגרמו כתוצאה ממתן השירותים.</li>
+    <li>חברת קלאוד איקס בע"מ ו/או מי מטעמה מתחייב לשמור על סודיות מלאה ומוחלטת בכל הנוגע לפרויקט, ביחס לידיעות שהגיעו אליו ו/או לנציגיו ועובדיו בתקופת מתן השירותים.</li>
+    <li>במסגרת מתן השירותים, ובמטרה לייעל ולשפר את איכותם, CLOUDX עשויה לעשות שימוש בכלי תוכנה של צדדים שלישיים, לרבות כלי בינה מלאכותית (AI), תוך שמירה על סודיות המידע ועמידה בסטנדרטים המקובלים של אבטחת מידע והגנת פרטיות.</li>
+    <li>שני הצדדים מתחייבים, כי בתקופת הסכם זה ועד תום 12 חודשים מיום סיומו, לא יפנו למי מעובדי הצד השני בהצעות ו/או בניסיון לשדל ו/או בכל דרך אחרת לגרום להם להיות מועסקים בעסק של הצד השני.</li>
+  </ul>
+
+  <!-- ============================================================
+       SIGNATURES — EXISTING CLIENT (simple, 4 fields per side)
+       ============================================================ -->
+  <div class="signature-section">
+    <p style="font-size: 14px; font-weight: 600; color: var(--gray-800);">אנו מאשרים את ההצעה המפורטת לעיל, על כל מרכיביה:</p>
+
+    <div class="sig-grid">
+      <!-- CLIENT side -->
+      <div class="sig-box">
+        <h4>הלקוח — [CLIENT_NAME]</h4>
+        <div class="sig-line">שם החותם ותפקידו: ________________</div>
+        <div class="sig-line">ח.פ.: ________________</div>
+        <div class="sig-line">חתימה: ________________</div>
+        <div class="sig-line">תאריך: ________________</div>
+      </div>
+      <!-- CLOUDX side -->
+      <div class="sig-box">
+        <h4>הספק — CLOUDX</h4>
+        <div class="sig-line">שם החותם ותפקידו: ________________</div>
+        <div class="sig-line">ח.פ.: 516190498</div>
+        <div class="sig-line">חתימה: ________________</div>
+        <div class="sig-line">תאריך: ________________</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SIGNATURES — NEW CLIENT (expanded, 9+ fields per side)
+       Use this format INSTEAD of the simple one above for new clients.
+
+       <div class="signature-section">
+         <p style="font-size: 14px; font-weight: 600; color: var(--gray-800);">
+           אנו מאשרים את ההצעה המפורטת לעיל, על כל מרכיביה:
+         </p>
+         <div class="sig-grid">
+           <div class="sig-box">
+             <h4>הלקוח — [CLIENT_NAME]</h4>
+             <div class="sig-line">שם החברה: ________________</div>
+             <div class="sig-line">ח.פ.: ________________</div>
+             <div class="sig-line">כתובת: ________________</div>
+             <div class="sig-line">שם המזמין: ________________</div>
+             <div class="sig-line">תפקיד בחברה: ________________</div>
+             <div class="sig-line">טלפון: ________________</div>
+             <div class="sig-line">אימייל: ________________</div>
+             <div class="sig-line">איש קשר לחשבוניות — שם: ________________</div>
+             <div class="sig-line">איש קשר לחשבוניות — טלפון: ________________</div>
+             <div class="sig-line">איש קשר לחשבוניות — אימייל: ________________</div>
+             <div class="sig-line">חותמת החברה וחתימה: ________________</div>
+             <div class="sig-line">תאריך: ________________</div>
+           </div>
+           <div class="sig-box">
+             <h4>הספק — CLOUDX</h4>
+             <div class="sig-line">שם: ________________</div>
+             <div class="sig-line">ח.פ.: 516190498</div>
+             <div class="sig-line">חותמת: ________________</div>
+             <div class="sig-line">חתימה: ________________</div>
+             <div class="sig-line">תאריך: ________________</div>
+           </div>
+         </div>
+       </div>
+       ============================================================ -->
+
+  <div class="page-logos">
+    <div class="logos-group">
+      <img src="[CLOUDX_LOGO_PATH]" alt="CLOUDX">
+      <div class="divider"></div>
+      <img src="[CLIENT_LOGO_PATH]" alt="[CLIENT_NAME]">
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
