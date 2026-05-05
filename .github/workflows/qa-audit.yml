@@ -1,0 +1,90 @@
+# CLOUDX — QA Audit on Push & Pull Requests
+# Runs the QA Audit Agent to score Apex code against CLOUDX standards.
+#
+# Required secrets:
+#   ANTHROPIC_API_KEY  — Anthropic API key for Claude
+#
+# Optional secrets (for email notifications):
+#   QA_EMAIL_TO        — Recipient email address
+#   QA_SMTP_USERNAME   — SMTP username (e.g., Gmail address)
+#   QA_SMTP_PASSWORD   — SMTP password (Gmail: use App Password)
+#   QA_SMTP_SERVER     — SMTP server (default: smtp.gmail.com)
+
+name: QA Audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'force-app/**/*.cls'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'force-app/**/*.cls'
+
+jobs:
+  qa-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install anthropic pyyaml
+
+      - name: Run QA Audit
+        run: python agents/qa_audit.py --project . --output qa-report.md
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Post report as PR comment
+        if: always() && github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: qa-report.md
+
+      - name: Add report to Job Summary
+        if: always()
+        run: cat qa-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report
+          path: qa-report.md
+          retention-days: 30
+
+      - name: Send QA report via email
+        if: always() && github.event_name == 'push' && env.QA_EMAIL_TO != ''
+        uses: dawidd6/action-send-mail@v3
+        env:
+          QA_EMAIL_TO: ${{ secrets.QA_EMAIL_TO }}
+          QA_SMTP_SERVER: ${{ secrets.QA_SMTP_SERVER }}
+        with:
+          server_address: ${{ env.QA_SMTP_SERVER || 'smtp.gmail.com' }}
+          server_port: 465
+          secure: true
+          username: ${{ secrets.QA_SMTP_USERNAME }}
+          password: ${{ secrets.QA_SMTP_PASSWORD }}
+          subject: "QA Audit — ${{ github.repository }} [${{ github.sha }}]"
+          to: ${{ env.QA_EMAIL_TO }}
+          from: CLOUDX QA Agent <${{ secrets.QA_SMTP_USERNAME }}>
+          body: |
+            QA Audit completed for ${{ github.repository }}
+
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Author: ${{ github.actor }}
+
+            See full report attached, or view online:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          attachments: qa-report.md

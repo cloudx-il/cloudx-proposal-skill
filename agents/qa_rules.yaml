@@ -1,0 +1,64 @@
+# CLOUDX QA Audit Rules
+# Each rule can be enabled/disabled and has a severity level.
+# Severity: critical (must fix), warning (should fix), info (nice to have)
+
+rules:
+  with_sharing:
+    enabled: true
+    severity: critical
+    description: "All Apex classes must use 'with sharing' unless explicitly justified"
+
+  soql_limit:
+    enabled: true
+    severity: warning
+    description: "All SOQL queries must include LIMIT clause"
+
+  no_soql_in_loops:
+    enabled: true
+    severity: critical
+    description: "No SOQL or DML statements inside for/while loops"
+
+  no_hardcoded_ids:
+    enabled: true
+    severity: critical
+    description: "No hardcoded 15/18-character Salesforce IDs"
+
+  recursion_guards:
+    enabled: true
+    severity: warning
+    description: "Trigger handlers should have recursion prevention (isRunning pattern)"
+
+  test_class_exists:
+    enabled: true
+    severity: critical
+    description: "Every non-test Apex class must have a corresponding test class"
+
+  try_catch_callouts:
+    enabled: true
+    severity: warning
+    description: "HTTP callouts and external integrations must be wrapped in try-catch"
+
+  no_magic_numbers:
+    enabled: true
+    severity: info
+    description: "Use constants instead of magic numbers/strings in logic"
+
+  database_partial_dml:
+    enabled: true
+    severity: info
+    description: "Batch jobs should use Database.update(records, false) for partial success"
+
+  aura_enabled_cacheable:
+    enabled: true
+    severity: info
+    description: "Read-only @AuraEnabled methods should use cacheable=true"
+
+# AI scoring configuration
+scoring:
+  model: claude-haiku-4-5
+  skip_test_classes: true
+  skip_generated: true
+
+# Files to exclude from scanning
+exclude_files: []
+#  - "SomeLegacyClass.cls"

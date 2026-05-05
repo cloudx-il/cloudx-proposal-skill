@@ -1,0 +1,125 @@
+# CLOUDX — Security Scanning on Push & PR
+# Runs GitGuardian (secrets), Salesforce Code Analyzer (SAST), and Snyk (dependencies)
+# Requires secrets: GITGUARDIAN_API_KEY, SNYK_TOKEN
+
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  secrets-scan:
+    name: Secrets Detection (GitGuardian)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: GitGuardian scan
+        uses: GitGuardian/ggshield-action@v1
+        env:
+          GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
+          GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
+          GITHUB_PULL_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+
+  sf-code-analyzer:
+    name: Salesforce Code Analyzer
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+      actions: read
+    # Run only if force-app exists (Salesforce project)
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for Salesforce source
+        id: check-sf
+        run: |
+          if [ -d "force-app" ]; then
+            echo "has_sf=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_sf=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node.js
+        if: steps.check-sf.outputs.has_sf == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '>=20.9.0'
+
+      - name: Setup Java
+        if: steps.check-sf.outputs.has_sf == 'true'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '>=11'
+          distribution: 'zulu'
+
+      - name: Install Salesforce CLI & Code Analyzer
+        if: steps.check-sf.outputs.has_sf == 'true'
+        run: |
+          npm install -g @salesforce/cli@latest
+          sf plugins install code-analyzer@latest
+
+      - name: Run Code Analyzer
+        if: steps.check-sf.outputs.has_sf == 'true'
+        id: run-code-analyzer
+        uses: forcedotcom/run-code-analyzer@v2
+        with:
+          run-arguments: --workspace . --view detail --output-file sfca_results.html --output-file sfca_results.json
+          results-artifact-name: sf-code-analyzer-report
+          github-token: ${{ github.token }}
+
+      - name: Fail on Critical violations
+        if: steps.check-sf.outputs.has_sf == 'true' && steps.run-code-analyzer.outputs.num-sev1-violations > 0
+        run: |
+          echo "Critical violations found — failing the build."
+          exit 1
+
+  snyk-scan:
+    name: Snyk Dependencies & Code
+    runs-on: ubuntu-latest
+    # Run only if package.json exists (Node.js project)
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for package.json + lock file
+        id: check-node
+        run: |
+          if [ -f "package.json" ] && [ -f "package-lock.json" ]; then
+            echo "has_node=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_node=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check-node.outputs.has_node == 'true'
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        if: steps.check-node.outputs.has_node == 'true'
+        run: npm ci
+
+      - name: Run Snyk dependency scan
+        if: steps.check-node.outputs.has_node == 'true'
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Run Snyk code scan
+        if: steps.check-node.outputs.has_node == 'true'
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code test
+          args: --severity-threshold=high
