@@ -4,10 +4,15 @@
     {
       "label": "CLOUDX: Check Security Secrets",
       "type": "shell",
-      "command": "bash",
-      "args": ["/c/Projects/CLOUDX/scripts/check-project-secrets.sh"],
+      "command": "/c/Projects/CLOUDX/scripts/check-project-secrets.sh",
       "runOptions": {
         "runOn": "folderOpen"
+      },
+      "options": {
+        "shell": {
+          "executable": "C:\\Program Files\\Git\\bin\\bash.exe",
+          "args": ["-l", "-c"]
+        }
       },
       "presentation": {
         "reveal": "silent",
